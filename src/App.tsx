@@ -1,21 +1,27 @@
 import React, { useRef, useState, Component, useEffect } from "react";
 import { hot } from "react-hot-loader";
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { Canvas, MeshProps, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import "./App.css";
+import { Mesh } from "three";
 
-const Box = (props) => {
+const Box: React.FC<MeshProps> = (props) => {
   const ref = useRef()
 
   const [hovered, hover] = useState(false)
   const [clicked, click] = useState(false)
 
-  useFrame((state, delta) => (ref.current.rotation.x += 0.01))
+  useFrame((state, delta) => {
+    if (!ref.current) return
+    const mesh = ref.current as Mesh
+    mesh.rotation.x += 0.01
+  })
+
 
   return (
     <mesh
       {...props}
-      ref={ref}
+      ref={ref.current}
       scale={clicked ? 1.5 : 1}
       onClick={(event) => click(!clicked)}
       onPointerOver={(event) => hover(true)}
@@ -26,7 +32,7 @@ const Box = (props) => {
   )
 }
 
-const Cuboid = (props) => {
+const Cuboid: React.FC<MeshProps> = (props) => {
   const ref = useRef()
 
   const [hovered, hover] = useState(false)
@@ -37,7 +43,7 @@ const Cuboid = (props) => {
   return (
     <mesh
       {...props}
-      ref={ref}
+      ref={ref.current}
       scale={clicked ? 1.5 : 1}
       onClick={(event) => click(!clicked)}
       onPointerOver={(event) => hover(true)}
@@ -50,7 +56,7 @@ const Cuboid = (props) => {
 
 const CameraController = () => {
   const { camera, gl } = useThree();
-  
+
   useEffect(
     () => {
       const controls = new OrbitControls(camera, gl.domElement);
@@ -66,7 +72,7 @@ const CameraController = () => {
   return null;
 };
 
-export const App = () => {
+const App: React.FC = () => {
   console.log("reloaded")
 
 
