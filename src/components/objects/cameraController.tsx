@@ -9,7 +9,7 @@ export const CameraController = () => {
         () => {
             const controls = new OrbitControls(camera, gl.domElement);
 
-            controls.minDistance = 30;
+            controls.minDistance = 10;
             controls.maxDistance = 100;
             controls.maxPolarAngle = 1.5
 
