@@ -1,95 +1,27 @@
-import React, { useRef, useState, Component, useEffect } from "react";
+import React from "react";
 import { hot } from "react-hot-loader";
-import { Canvas, MeshProps, useFrame, useThree } from '@react-three/fiber'
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { Canvas } from '@react-three/fiber'
+import { Ground } from "./components/objects/ground";
+import { CameraController } from "./components/objects/cameraController";
+import { Branch } from "./components/objects/branch";
 import "./App.css";
-import { Mesh } from "three";
 
-const Box: React.FC<MeshProps> = (props) => {
-  const ref = useRef()
-
-  const [hovered, hover] = useState(false)
-  const [clicked, click] = useState(false)
-
-  useFrame((state, delta) => {
-    if (!ref.current) return
-    const mesh = ref.current as Mesh
-    mesh.rotation.x += 0.01
-  })
-
-
-  return (
-    <mesh
-      {...props}
-      ref={ref.current}
-      scale={clicked ? 1.5 : 1}
-      onClick={(event) => click(!clicked)}
-      onPointerOver={(event) => hover(true)}
-      onPointerOut={(event) => hover(false)}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-    </mesh>
-  )
-}
-
-const Cuboid: React.FC<MeshProps> = (props) => {
-  const ref = useRef()
-
-  const [hovered, hover] = useState(false)
-  const [clicked, click] = useState(false)
-
-  // useFrame((state, delta) => (ref.current.rotation.x += 0.01))
-
-  return (
-    <mesh
-      {...props}
-      ref={ref.current}
-      scale={clicked ? 1.5 : 1}
-      onClick={(event) => click(!clicked)}
-      onPointerOver={(event) => hover(true)}
-      onPointerOut={(event) => hover(false)}>
-      <boxGeometry args={[1, 4, 1]} />
-      <meshStandardMaterial color={hovered ? 'green' : 'grey'} />
-    </mesh>
-  )
-}
-
-const CameraController = () => {
-  const { camera, gl } = useThree();
-
-  useEffect(
-    () => {
-      const controls = new OrbitControls(camera, gl.domElement);
-
-      controls.minDistance = 3;
-      controls.maxDistance = 20;
-      return () => {
-        controls.dispose();
-      };
-    },
-    [camera, gl]
-  );
-  return null;
-};
+const DegToRad = (deg: number) => deg * Math.PI / 180
 
 const App: React.FC = () => {
-  console.log("reloaded")
-
-
   return (
     <div className="App">
       <h1> Hello, World!</h1>
-      <Canvas>
+      <Canvas camera={{ fov: 45, position: [25, 5, 25] }}>
         <CameraController />
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
-        <Box position={[-1.6, 0, 0]} />
-        <Box position={[1.6, 0, 0]} />
-        <Cuboid position={[0, 0, 0]} />
+        <Ground />
+        <Branch start={[0, 0, 0]} angle_vir={0} angle_hor={0} dia_start={2} dia_end={0.1} length={10} />
+        <Branch start={[0, 2.5, 0]} angle_vir={DegToRad(45)} angle_hor={DegToRad(0)} dia_start={1} dia_end={0.5} length={3} />
       </Canvas>
     </div>
   );
-
 }
 
 export default hot(module)(App);
