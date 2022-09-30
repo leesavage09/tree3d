@@ -8,7 +8,7 @@ export const Ground: React.FC<MeshProps> = (props) => {
             rotation={[-1.5708, 0, 0]}
             position={[0, 0, 0]}
         >
-            <planeGeometry args={[10, 10]} />
+            <planeGeometry args={[100, 100]} />
             <meshStandardMaterial color={'green'} />
         </mesh>
     )
