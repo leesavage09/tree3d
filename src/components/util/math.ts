@@ -10,3 +10,7 @@ export const findPosition = (yaw: number, pitch: number, distance: number) => {
 
 
 export const DegToRad = (deg: number) => deg * Math.PI / 180
+
+export const roll = (probability:number) => {
+    return Math.random()<probability
+}
