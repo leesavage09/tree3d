@@ -4,7 +4,7 @@ import uuid from "react-uuid"
 import { CylinderGeometry, Mesh, Vector3 } from "three"
 import { values } from "../../ui/setupControls"
 import { roll } from '../../util/math'
-import { nextBranchDia, nextBranchLen } from './util'
+import { nextBranchDia, nextBranchLen, nextRootAngle , nextSideAngle } from './util'
 
 
 export interface BranchProps {
@@ -53,12 +53,12 @@ export const Branch: React.FC<BranchProps> = (props) => {
   const spawnBranches = (start: Vector3) => {
     const nextDepth = depth + 1
     if (depth >= values.maxDepth) return
-    if (roll(values.rootSurvival)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={0} zAngle={0} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
+    if (roll(values.rootSurvival)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={nextRootAngle()} zAngle={nextRootAngle()} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
 
-    if (roll(values.survival1)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={-3} zAngle={0} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
-    if (roll(values.survival2)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={3} zAngle={0} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
-    if (roll(values.survival3)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={0} zAngle={3} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
-    if (roll(values.survival4)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={0} zAngle={-3} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
+    if (roll(values.survival1)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={nextSideAngle()} zAngle={0} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
+    if (roll(values.survival2)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={-nextSideAngle()} zAngle={0} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
+    if (roll(values.survival3)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={0} zAngle={nextSideAngle()} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
+    if (roll(values.survival4)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={0} zAngle={-nextSideAngle()} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
   }
 
   useEffect(() => {
