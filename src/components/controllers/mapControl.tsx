@@ -13,7 +13,7 @@ export const MapControl = () => {
             controls.enableDamping = true;
             controls.dampingFactor = 0.2;
             controls.minDistance = 10;
-            controls.maxDistance = 100;
+            controls.maxDistance = 500;
             controls.maxPolarAngle = 1.5
 
             controls.listenToKeyEvents(window)
