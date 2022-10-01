@@ -41,11 +41,11 @@ const Stats: React.FC<StatsProps> = ({ stats }) => {
 
     return (
         <div>
-            <ul>
-                {/* <li>{`Geometry ${stats.three.gl.info.memory.geometries}`}</li> */}
-                <li>{`Triangles ${triangles}`}</li>
-                <li>{`FPS ${stats.fps}`}</li>
-            </ul>
+            <p>
+                {`Triangles ${triangles}`}
+                <br />
+                {`FPS ${stats.fps}`}
+            </p>
         </div>
     )
 }
@@ -57,7 +57,7 @@ export const useLogger = () => {
     const [stats, setStats] = useState<stats>()
 
     return {
-        LoggerDisplay: ()=><Stats stats={stats} />,
-        LoggerRecorder: ()=><Logger updateStats={setStats} />
+        LoggerDisplay: () => <Stats stats={stats} />,
+        LoggerRecorder: () => <Logger updateStats={setStats} />
     }
 }
