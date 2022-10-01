@@ -20,15 +20,26 @@ const App: React.FC = () => {
     }
   }
 
+  const handleRemoveAll = () => {
+    setRoots([])
+  }
+
   return (
-    <div className="App">
-      <SetupControls />
-      <LoggerDisplay />
+    <div className="full-height">
+      <div className="controls_left">
+        <LoggerDisplay />
+        <button onClick={handleRemoveAll}>
+          Clear all
+        </button>
+      </div>
+      <div className="controls_right" id="lilGui">
+        <SetupControls />
+      </div>
       <Canvas camera={{ fov: 45, position: [25, 5, 25] }}>
         <LoggerRecorder />
         <MapControl />
         <ambientLight />
-        <pointLight position={[10, 10, 10]} />
+        {/* <pointLight position={[10, 10, 10]} /> */}
         <Ground onClick={handleGroundClicked} />
         {roots}
       </Canvas>
