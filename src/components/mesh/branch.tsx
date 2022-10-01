@@ -3,6 +3,7 @@ import React, { MutableRefObject, Ref, useEffect, useRef, useState } from "react
 import uuid from "react-uuid"
 import { CylinderGeometry, Mesh, BufferGeometry, Vector3 } from "three"
 import { findPosition, DegToRad, roll } from '../util/math'
+import { constants } from "../../App"
 
 const minNodesPerMeter = 1
 const maxNodesPerMeter = 3
@@ -17,31 +18,18 @@ export interface BranchProps {
   xAngle?: number,
   zAngle?: number,
   col?: string,
+  depth?: number,
 }
 
 const defaultProps = {
+  depth: 1,
   xAngle: 0,
   zAngle: 0,
   col: "#302d24",
 };
 
-const constants = {
-  /** min length where no branches will spawn */
-  minLen: 0.2,
-  /** next length multiplier */
-  nextLen: 0.60,
-  /** next diameter multiplier */
-  nextDia: 0.50,
-  /** sides of the cylinder when its diameter is 1 */
-  sides: 30,
-  /** animation speed in m/s */
-  growth: 5,
-
-  survival: 1
-}
-
 export const Branch: React.FC<BranchProps> = (props) => {
-  const { dia, len, start, zAngle, xAngle, col } = { ...defaultProps, ...props }
+  const { dia, len, start, zAngle, xAngle, col, depth } = { ...defaultProps, ...props }
 
   const [branches, setBranches] = useState<JSX.Element[]>([])
   const [length, setLength] = useState(0.1)
@@ -54,16 +42,18 @@ export const Branch: React.FC<BranchProps> = (props) => {
   const spawnAsyncBranch = (branch: JSX.Element) => {
     setTimeout(() => {
       setBranches((branches => [...branches, branch]))
-    }, Math.random() * 1000);
+    }, 1);
   }
 
   const spawnBranches = (start: Vector3, dia: number, len: number) => {
-    if (len < constants.minLen) return
-    if (roll(constants.survival)) spawnAsyncBranch (<Branch key={uuid()} start={start} xAngle={3} zAngle={0} dia={dia} len={len} />)
-    if (roll(constants.survival)) spawnAsyncBranch (<Branch key={uuid()} start={start} xAngle={0} zAngle={0} dia={dia} len={len} />)
-    if (roll(constants.survival)) spawnAsyncBranch (<Branch key={uuid()} start={start} xAngle={-3} zAngle={0} dia={dia} len={len} />)
-    if (roll(constants.survival)) spawnAsyncBranch (<Branch key={uuid()} start={start} xAngle={0} zAngle={3} dia={dia} len={len} />)
-    if (roll(constants.survival)) spawnAsyncBranch (<Branch key={uuid()} start={start} xAngle={0} zAngle={-3} dia={dia} len={len} />)
+    const nextDepth = depth+1
+    if (depth >= constants.maxDepth) return
+    if (roll(constants.rootSurvival)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={0} zAngle={0} dia={dia} len={len} depth={nextDepth} />)
+
+    if (roll(constants.sideSurvival)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={-3} zAngle={0} dia={dia} len={len} depth={nextDepth} />)
+    if (roll(constants.sideSurvival)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={3} zAngle={0} dia={dia} len={len} depth={nextDepth} />)
+    if (roll(constants.sideSurvival)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={0} zAngle={3} dia={dia} len={len} depth={nextDepth} />)
+    if (roll(constants.sideSurvival)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={0} zAngle={-3} dia={dia} len={len} depth={nextDepth} />)
   }
 
   useEffect(() => {
@@ -94,7 +84,7 @@ export const Branch: React.FC<BranchProps> = (props) => {
       ref={ref.mesh}
       position={start}
     >
-      <cylinderGeometry ref={ref.geometry} args={[dia * constants.nextDia, dia, length, Math.max(3, Math.floor(dia * constants.sides)), 1, true]} />
+      <cylinderGeometry ref={ref.geometry} args={[dia * constants.nextDia, dia, length, Math.max(3, Math.floor(dia * constants.SideMultiplier)), 1, false]} />
       <meshStandardMaterial color={col} />
       {branches}
     </mesh>
