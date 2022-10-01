@@ -11,6 +11,14 @@ export const findPosition = (yaw: number, pitch: number, distance: number) => {
 
 export const DegToRad = (deg: number) => deg * Math.PI / 180
 
-export const roll = (probability:number) => {
-    return Math.random()<probability
+export const roll = (probability: number) => {
+    return Math.random() < probability
 }
+
+
+export const random = (min: number, max: number) => {
+    const a = (Math.random() * (max - min) + min); 
+    if (a<min || a>max) throw Error("out of range util/math/random")
+    return a
+}
+
