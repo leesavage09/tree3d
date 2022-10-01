@@ -1,10 +1,10 @@
+import { values } from "../../ui/setupControls"
 import { random } from "../../util/math"
-import { constants } from "../../../App"
 
 export const nextBranchLen = (len: number) => {
-    return len * random(constants.nextLenMin, constants.nextLenMax)
+    return len * random(values.nextLenMin, values.nextLenMax)
 }
 
 export const nextBranchDia = (dia: number) => {
-    return dia * random(constants.nextDiaMin, constants.nextDiaMax)
+    return dia * random(values.nextDiaMin, values.nextDiaMax)
 }

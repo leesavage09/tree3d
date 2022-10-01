@@ -1,7 +1,6 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useState } from "react"
-import { MapControls, OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { constants } from "../../App";
+import { MapControls } from "three/examples/jsm/controls/OrbitControls";
 
 export const MapControl = () => {
     const { camera, gl } = useThree();
