@@ -2,7 +2,7 @@ import { useFrame } from "@react-three/fiber"
 import React, { MutableRefObject, useEffect, useRef, useState } from "react"
 import uuid from "react-uuid"
 import { CylinderGeometry, Mesh, Vector3 } from "three"
-import { values } from "../../ui/setupControls"
+import { treeValues } from "../../ui/setupControls"
 import { roll } from '../../util/math'
 import { nextBranchDia, nextBranchLen, nextRootAngle , nextSideAngle } from './util'
 
@@ -52,13 +52,13 @@ export const Branch: React.FC<BranchProps> = (props) => {
 
   const spawnBranches = (start: Vector3) => {
     const nextDepth = depth + 1
-    if (depth >= values.maxDepth) return
-    if (roll(values.rootSurvival)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={nextRootAngle()} zAngle={nextRootAngle()} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
+    if (depth >= treeValues.maxDepth) return
+    if (roll(treeValues.rootSurvival)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={nextRootAngle()} zAngle={nextRootAngle()} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
 
-    if (roll(values.survival1)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={nextSideAngle()} zAngle={0} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
-    if (roll(values.survival2)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={-nextSideAngle()} zAngle={0} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
-    if (roll(values.survival3)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={0} zAngle={nextSideAngle()} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
-    if (roll(values.survival4)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={0} zAngle={-nextSideAngle()} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
+    if (roll(treeValues.survival1)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={nextSideAngle()} zAngle={0} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
+    if (roll(treeValues.survival2)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={-nextSideAngle()} zAngle={0} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
+    if (roll(treeValues.survival3)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={0} zAngle={nextSideAngle()} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
+    if (roll(treeValues.survival4)) spawnAsyncBranch(<Branch key={uuid()} start={start} xAngle={0} zAngle={-nextSideAngle()} diaStart={diaEnd} diaEnd={nextBranchDia(diaEnd)} len={nextBranchLen(len)} depth={nextDepth} />)
   }
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export const Branch: React.FC<BranchProps> = (props) => {
 
   useFrame((state, delta) => {
     if (length !== len) {
-      const newLength = Math.min(len, length + delta * values.growth)
+      const newLength = Math.min(len, length + delta * treeValues.growth)
       setLength(newLength)
       if (newLength === len) {
         spawnBranches(new Vector3(0, len, 0))
@@ -89,7 +89,7 @@ export const Branch: React.FC<BranchProps> = (props) => {
       ref={ref.mesh}
       position={start}
     >
-      <cylinderGeometry ref={ref.geometry} args={[diaEnd, diaStart, length, Math.max(3, Math.floor(diaStart * values.SideMultiplier)), 1, false]} />
+      <cylinderGeometry ref={ref.geometry} args={[diaEnd, diaStart, length, Math.max(3, Math.floor(diaStart * treeValues.SideMultiplier)), 1, false]} />
       <meshStandardMaterial color={col} />
       {branches}
     </mesh>

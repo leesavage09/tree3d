@@ -1,16 +1,16 @@
-import { values } from "../../ui/setupControls"
+import { treeValues } from "../../ui/setupControls"
 import { DegToRad, random } from "../../util/math"
 
 export const nextBranchLen = (len: number) => {
-    return len * random(values.nextLenMin, values.nextLenMax)
+    return len * random(treeValues.nextLenMin, treeValues.nextLenMax)
 }
 
 export const nextBranchDia = (dia: number) => {
-    return dia * random(values.nextDiaMin, values.nextDiaMax)
+    return dia * random(treeValues.nextDiaMin, treeValues.nextDiaMax)
 }
 
 export const nextRootAngle = () => {
-    const a = random(DegToRad(values.rootAngleMin), DegToRad(values.rootAngleMax))
+    const a = random(DegToRad(treeValues.rootAngleMin), DegToRad(treeValues.rootAngleMax))
     if (Math.random() > 0.5) {
         console.log(">", a)
         return a
@@ -22,5 +22,5 @@ export const nextRootAngle = () => {
 }
 
 export const nextSideAngle = () => {
-    return random(DegToRad(values.sideAngleMin), DegToRad(values.sideAngleMax))
+    return random(DegToRad(treeValues.sideAngleMin), DegToRad(treeValues.sideAngleMax))
 }
