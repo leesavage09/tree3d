@@ -4,7 +4,7 @@ import uuid from "react-uuid"
 import { CylinderGeometry, Mesh, Vector3 } from "three"
 import { treeValues } from "../../ui/setupControls"
 import { roll } from '../../util/math'
-import { nextBranchDia, nextBranchLen, nextRootAngle , nextSideAngle } from './util'
+import { nextBranchDia, nextBranchLen, nextRootAngle, nextSideAngle } from './util'
 
 
 export interface BranchProps {
@@ -86,6 +86,7 @@ export const Branch: React.FC<BranchProps> = (props) => {
 
   return (
     <mesh
+      castShadow
       ref={ref.mesh}
       position={start}
     >
